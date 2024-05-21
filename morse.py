@@ -6,6 +6,7 @@ def main():
     morse_code_engine = MorseCode()
     typy("hello there 😍", wait=1)
     while True:
+        # asking the user for what to do
         asked_process = get_user_input(
             "Do you want to encode or decode?(encode,decode)",
             expected_values=("encode", "decode"),
@@ -45,9 +46,12 @@ def main():
 
 def get_user_input(prompt: str, expected_values: tuple) -> str:
     while True:
+        # asking the user with the given prompt
         user_input = typy(prompt, next=False, get_input=True).lower().strip()
+        # check if the input is expected and if it is returning the values
         if user_input in expected_values:
             return user_input
+        # if the user input is not valid ask him to do it again
         else:
             typy(f'"{user_input}" is not a valid operation!!!', wait=0.5)
             while True:
@@ -69,6 +73,7 @@ def get_user_input(prompt: str, expected_values: tuple) -> str:
                     typy(f'"{continue_prompt}" is not a valid key word!!!', wait=0.5)
 
 
+# a simple func to type a string character by character
 def typy(txt, speed=0.05, next=True, wait=0, get_input=False) -> str | None:
     for char in txt:
         sleep(speed)
