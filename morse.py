@@ -1,5 +1,6 @@
 from morse_codes import *
 from time import sleep
+import winsound
 
 
 def main():
@@ -8,8 +9,8 @@ def main():
     while True:
         # asking the user for what to do
         asked_process = get_user_input(
-            "Do you want to encode or decode?(encode,decode)",
-            expected_values=("encode", "decode"),
+            "what do you want to do?(encode,decode,play morse code)",
+            expected_values=("encode", "decode", "play morse code"),
         )
         if asked_process == "encode":
             text = typy(
@@ -35,6 +36,20 @@ def main():
             decoded_morse_code = morse_code_engine.decode(morse_code)
             typy("here is your decoded morse code: ", next=False)
             typy(decoded_morse_code, speed=0.1)
+            continue_process = get_user_input(
+                "Do you want to continue exploring?(Yes,No)",
+                expected_values=("yes", "no"),
+            )
+            if continue_process == "no":
+                typy("it was my pleaser talking to you. Bye🤗", wait=0.8)
+                exit()
+
+        elif asked_process == "play morse code":
+            morse_code = typy(
+                "what is the morse you want to play? ", next=False, get_input=True
+            )
+
+            morse_code_engine.play_morse_code(morse_code)
             continue_process = get_user_input(
                 "Do you want to continue exploring?(Yes,No)",
                 expected_values=("yes", "no"),
@@ -110,6 +125,24 @@ class MorseCode:
             else:
                 print(f"Unknown Morse code: {morse_code}")
         return self.decoded_string
+
+    # playing the morse code in sound
+    def play_morse_code(self, morse_code: str):
+        frequency = 500  # Set Frequency To 2500 Hertz
+        duration_dot = 300  # Set Duration To 1000 ms == 1 second
+        duration_dash = 600
+        for i in morse_code:
+            if i == ".":
+                winsound.Beep(frequency, duration_dot)
+            elif i == "-":
+                winsound.Beep(frequency, duration_dash)
+            elif i == " ":
+                sleep(0.3)
+            elif i == "/":
+                sleep(2.1)
+            else:
+                print(f"Unknown Morse character: {i}")
+                exit()
 
 
 if __name__ == "__main__":
